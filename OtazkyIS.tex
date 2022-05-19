@@ -1,0 +1,309 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+% Basic packages
+	\usepackage{amssymb}
+	\usepackage{amsmath}
+	\usepackage{graphicx}
+	\usepackage[czech]{babel}
+	\usepackage{natbib}
+
+% Relevant packages
+	\usepackage{bm}
+	\usepackage{bbm}
+	\usepackage{geometry}
+	\usepackage{enumitem}
+	\usepackage{listings}
+	\usepackage{multicol,float}
+
+% Document settings
+	\geometry{a4paper,margin=15mm}
+
+	\setlist[itemize]{nolistsep,noitemsep}
+		
+	\setlength{\parindent}{0pt}
+	\setlength{\parskip}{1.5em}
+	\renewcommand{\baselinestretch}{1.2}
+
+	\setlength{\abovedisplayskip}{1.2em}
+	\setlength{\belowdisplayskip}{1.2em}
+	\renewcommand{\arraystretch}{1.2}
+
+\begin{document}
+% \begin{multicols}{2}
+	\section{Popište možné tvary dynamických systémů pro modely: spojité-diskrétní, lineární-nelineární. }
+	
+	\subsection*{Lineární spojitý systém v časové oblasti}
+	\begin{align*}
+		\bm{\dot{x}} &= \bm{A}\bm{x} + \bm{B}\bm{u} \\
+		\bm{y} &= \bm{C}\bm{x} + \bm{D}\bm{u}
+	\end{align*}
+	\subsection*{Lineární spojitý systém ve frekvenční oblasti}
+	\begin{align*}
+		s\bm{x} &= \bm{A}\bm{x} + \bm{B}\bm{u} \\
+		\bm{y} &= \bm{C}\bm{x} + \bm{D}\bm{u}
+	\end{align*}
+	Po úpravě $\bm{x}(s\bm{I} - \bm{A}) = \bm{B}\bm{u}$ můžeme dosadit
+	\begin{equation}
+		\bm{y} = \bm{C}(s\bm{I}-\bm{A})^{-1}\bm{B}\bm{u}+\bm{D}\bm{u}
+	\end{equation}
+	\subsubsection*{Dynamická poddajnost}
+	\begin{equation}
+	\bm{G}(\bm{x}) = \frac{\bm{y}}{\bm{u}} = \bm{C}(s\bm{I}-\bm{A})^{-1}\bm{B}+\bm{D}
+	\end{equation}
+	\subsection*{Lineární diskrétní systém}
+	\begin{align*}
+		\bm{x}_{t+\Delta t} &= \bm{M}\bm{x}_t + \bm{N}\bm{u}_t \\
+		\bm{y}_t &= \bm{O}\bm{x}_t + \bm{P}\bm{u}_t
+	\end{align*}
+	diskrétní tvar lze získat z tvaru spojitého modelu v časové oblasti
+	\begin{align*}
+		\bm{M} = e^{\bm{A}\Delta t} \doteq \bm{I} + \bm{A}\Delta t
+		\,,\;
+		\bm{N} = \bm{B}
+		\,,\;
+		\bm{O} = \bm{C}
+		\,,\;
+		\bm{P} = \bm{D}
+	\end{align*}
+	\subsection*{Nelineární systém}
+	\begin{align}
+		\bm{\dot{x}} = \bm{f}(\bm{x}) + \bm{g}(\bm{x})\bm{u} \\
+		\bm{y} = \bm{c}(\bm{x}) + \bm{d}(\bm{x}) \bm{u}
+	\end{align}
+
+	\section{Popište postup identifikace lineárního modelu SISO systému ve tvaru ARX a OE. }
+	
+	\subsection{ARX}
+	Lineární filtr používajíci minulé vstupy a výstupy systému
+	\begin{equation}
+		\hat{y}(t) + a_1 y(t-\Delta t) + \dots + a_n y(t-n\Delta t)
+		=
+		b_0 u(t) + \dots + b_n u(t-n\Delta t)
+	\end{equation}
+	Pro $N$ kroků měření lze vypsat $N-n$ rovnic
+	\begin{align*}
+		\hat{y}_n &= -a_1 y_{n-1} - \dots - a_n y_0 + b_0 u_n + \dots + b_n u_0 \\
+		&\vdots \\
+		\hat{y}_N &= -a_1 y_{N-1} - \dots - a_n y_{N-n} + b_0 u_N + \dots + b_n u_{N-n}
+	\end{align*}
+	Ty lze zapsat ve tvaru
+	\begin{equation}
+	\bm{\hat{y}} = \bm{\Phi} \bm{p}
+	\;,\quad 
+	\end{equation}
+	kde
+	\begin{align*}
+		\bm{\hat{y}} &= \begin{bmatrix} \hat{y}_n & \dots & \hat{y}_N \end{bmatrix}^T
+		\\ 
+		\bm{\Phi}
+		&=
+		\begin{bmatrix}
+			y_{n-1} & \dots & y_0 & u_n & \dots & u_0 \\
+			\vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+			y_{N-1} & \dots & y_{N-n} & u_N & \dots & u_{N-n}
+		\end{bmatrix}
+		\\ 
+		\bm{p} &= \begin{bmatrix} -a_1 & \dots & -a_n & b_0 & \dots & b_n \end{bmatrix}^T
+	\end{align*}
+
+	\subsection{EO}
+	Lineární filtr používajíci minulé vstupy a výstupy modelu
+	\begin{equation}
+		\hat{y}(t) + a_1 \hat{y}(t-\Delta t) + \dots + a_n \hat{y}(t-n\Delta t)
+		=
+		b_0 u(t) + \dots + b_n u(t-n\Delta t)
+	\end{equation}
+	zbytek obdobně jako pro ARX jen se změnou $y$ na $\hat{y}$.
+
+
+	\section{Popište postup identifikace lineárního modelu SISO systému ve tvaru FIR. }
+
+	\begin{equation}
+		\hat{y}(t) = g_0 u(t) + g_1 u(t-\Delta t) + \dots + g_n u(t-n\Delta t)
+	\end{equation}
+
+	\begin{align}
+		\hat{y}_n &= g_0 u_n + g_1 u_{n-1} + \dots + g_n u_0 \\
+		&\vdots \\
+		\hat{y}_N &= g_0 u_{N} + g_1 u_{N-1} + \dots + g_n u_{N-n}
+	\end{align}
+
+	\begin{equation}
+		\bm{\hat{y}} = \bm{\Phi} \bm{p}
+		\;,\quad 
+	\end{equation}
+	kde
+	\begin{align*}
+		\bm{\hat{y}} &= \begin{bmatrix} \hat{y}_n & \dots & \hat{y}_N \end{bmatrix}^T
+		\\ 
+		\bm{\Phi}
+		&=
+		\begin{bmatrix}
+			u_n & \dots & u_0 \\
+			\vdots & \ddots & \vdots \\
+			u_N & \dots & u_{N-n} 
+		\end{bmatrix}
+		\\ 
+		\bm{p} &= \begin{bmatrix} g_0 & \dots & g_n \end{bmatrix}^T
+	\end{align*}
+
+	\section{Vysvětlete jak se sestavují Markovovy parametry a Hankelovy matice pro diskrétní stavový model. }
+
+	\begin{align}
+		\bm{x}_1 &= \bm{B} \bm{u}_0 & \bm{y}_0 &= \bm{D}\bm{u}_0 \\
+		\bm{x}_2 &= \bm{A}\bm{B} \bm{u}_0 + \bm{B} \bm{u}_1 & \bm{y}_1 &= \bm{C}\bm{x}_1 + \bm{D} \bm{u}_1 \\
+		\bm{x}_{k+1} &= \sum_{i=0}^{k} \bm{A}^{k-i} \bm{B} \bm{u}_i & \bm{y}_{k} &= \sum_{i=1}^k \underbrace{\bm{C} \bm{A}^{k-i} \bm{B}}_{h_i} \bm{u}_i + \underbrace{\bm{D}}_{h_0} \bm{u}_k 
+	\end{align}
+	\begin{equation}
+		\bm{Y} = \bm{U} \bm{H}
+	\end{equation}
+	kde $\bm{Y}$ je matice tvořena výstupy, $\bm{U}$ matice vstupů a matice $\bm{H}$ \emph{Markovovy parametry}.
+	\begin{align}
+		\bm{Y}
+		&=
+		\begin{bmatrix}
+			\bm{y}_0 & \bm{y}_0 & \dots & \bm{y}_q
+		\end{bmatrix}
+		\\
+		\bm{U}
+		&=
+		\begin{bmatrix}
+			\bm{u}_0 & \bm{u}_1 & \dots & \bm{u}_q \\
+			\bm{0} & \bm{u}_0 & \dots & \bm{u}_{q-1} \\
+			\vdots & & & \vdots \\
+			\bm{0} & \dots & & \bm{u}_{q-p} 
+		\end{bmatrix}
+		\\
+		\bm{H}
+		&=
+		\begin{bmatrix}
+			\bm{h}_0 & \bm{h}_1 & \dots & \bm{h}_p
+		\end{bmatrix}
+	\end{align}
+
+	\subsection{Hankelovy matice}
+	\begin{equation}
+		\bm{H}_1
+		=
+		\begin{bmatrix}
+			h_1 & h_2 & \dots & h_p \\
+			h_2 & h_3 & \dots & h_{p+1} \\
+			\vdots & \vdots & & \vdots \\
+			h_p & h_{p+1} & \dots & h_{2p-1}
+		\end{bmatrix}
+		\;,\quad 
+		\bm{H}_2
+		=
+		\begin{bmatrix}
+			h_2 & h_3 & \dots & h_{p+1} \\
+			h_3 & h_4 & \dots & h_{p+2} \\
+			\vdots & \vdots & & \vdots \\
+			h_{p+1} & h_{p+2} & \dots & h_{2p}
+		\end{bmatrix}
+	\end{equation}
+
+	\section{Popište identifikaci diskrétního stavového modelu pomocí metody ERA při znalosti Hankelových matic a Markovových parametrů. Co je to balancovaný tvar modelu ? }
+
+
+
+	\section{Vysvětlete rozdíl mezi modelem MDOF tlumeného mechanického systému s viskózním a strukturním tlumením. V čem je model se strukturním tlumením problematický pro časovou simulaci ? }
+
+	\subsection{Pohybové rovnice systému buzeného harmonickou funkcí}
+	\begin{itemize}
+		\item s viskózním tlumením
+		\begin{equation}
+			\bm{M}\bm{\ddot{x}} + \bm{B}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
+		\end{equation}
+		\item se strukturním tlumením
+		\begin{equation}
+			\bm{M}\bm{\ddot{x}} + (\bm{K} + j\bm{H}) \bm{x} = \bm{F}
+		\end{equation}
+	\end{itemize}
+
+	Strukturní model tlumení se speciálně orientovaný na analýzu ve frekvenčí oblasti, jelikož v časové oblasti zanáší do simulace komplexní čísla.
+
+	Ve frekvenční oblasti $\bm{B}\omega = \bm{H}$
+
+	\section{Popište modální transformaci mechanického systému, vysvětlete pojem proporcionálního tlumení. }
+
+	Základem modální trasformace je nalezení řešení problému vlastních čísel
+	\begin{equation*}
+		\bm{K}\bm{V} = \bm{\Omega}^2 \bm{M} \bm{V}
+	\end{equation*}
+	kde $\bm{\phi}_i$ jsou vlastní vektory a $\omega_i$ vlastní frekvence tvořící matice $\bm{V}$ a $\bm{\Omega}$  
+	\begin{equation*}
+		\bm{V} = \begin{bmatrix} \bm{\phi}_i & \dots & \bm{\phi}_N \end{bmatrix}
+		\,,\;
+		\bm{\Omega}^2 = \operatorname{diag}(\omega_i^2)
+		\;,\quad 
+		i \in \langle 1,N \rangle
+	\end{equation*}
+
+	Po té platí
+	\begin{equation*}
+		\bm{V}^T\bm{M}\bm{V} = \bm{1}
+		\;,\quad 
+		\bm{V}^T\bm{K}\bm{V} = \bm{\Omega}^2
+	\end{equation*}
+
+	Soustavu pohybovných rovnic systému s proporčním tlumením
+	\begin{equation*}
+		\bm{M}\bm{\ddot{x}} + \bm{C}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
+	\end{equation*}
+	lze zavedením modální souřadnice $\bm{q} = \bm{V}\bm{x}$ a vynásobením transponovanou maticí modální transformace $\bm{V}^T$ zleva, převést do tvaru
+	\begin{equation*}
+		\bm{\ddot{q}} + \bm{\beta}\bm{\dot{q}} + \bm{\Omega}^2 \bm{q} = \bm{V}^T \bm{F}
+		\;,\quad 
+		\bm{\beta} = \operatorname{diag}(2\,b_{r_i}\omega_i) \;,\quad i \in \langle 1,N \rangle
+	\end{equation*}
+	kde $ b_{r_i}$ jsou poměrné útlumy.
+
+	Soustava se pak rozpadá na rovnice ve tvaru
+	\begin{equation*}
+		\ddot{q}_i + 2\,\omega_i\xi_i \dot{q} + \omega_i^2 q = f_i
+		\;,\quad 
+		f_i = \bm{\phi}_i \cdot \bm{F}
+		\;,\quad 
+		i \in \langle 1,N \rangle
+	\end{equation*}
+
+	\section{Napište a vysvětlete MAC kritérium pro porovnání vlastních tvarů modelu a vlastních tvarů naměřených. }
+	\emph{Modal Assurance Criterion}
+	\begin{equation}
+	M_{rq} = \frac{\phi_{A_r}^T \phi_{X_r}}{(\phi_{A_r}^T\phi_{A_r})(\phi_{X_r}^T\phi_{X_r})}
+	\;,\quad 
+	r = 1,\dots,n \,,\; q = 1,\dots,m
+	\end{equation}
+	kde $n$ a $m$ je počet módů, $\phi_{A_q}$ měřené vlastní vekotry a $\phi_{X_r}$ vlastní vektory modelu.
+
+	MAC kritérium se užívá pro zhodnocení shody vlastních vektorů modelu a měřeného systému. Při dokonalé shodě $\bm{M} = \bm{I}$.
+
+	\section{Popište metodu SDOF identifikace mechanického systému z naměřených přenosových funkcí. }
+	\section{Popište princip LSCF metody MDOF identifikace mechanického systému z naměřených přenosových funkcí. K čemu slouží stabilizační diagram ? }
+	\section{Co je nelineární model Hammersteinova typu a nelineární model Wienerova typu. }
+	
+	\section{Uveďte strukturu nelineární identifikace používající koncept LOLIMOT. }
+	Local Linear Models Tree
+	\begin{equation}
+		\hat{y} = \sum_{i=1}^M \hat{y}_i \phi_i(\bm{u})
+	\end{equation}
+	kde $\hat{y}_i = w_{i0} + w_{i1} u_1 + w_{i2} u_2 + \dots$ jsou lokální lineární modely a $\phi_i(u)$ jejich platnostní funkce. Ty splňují
+	\begin{equation}
+		\sum_{i=1}^n \phi_i(u) = 1
+		\;,\quad 
+		\phi_i(u) = \frac{\mu_i(u)}{\sum_{i=1}^n \mu_i(u)}
+		\;,\quad 
+		\mu_i = \exp(-\frac{1}{2}(...))
+	\end{equation}
+
+
+	\section{Uveďte postup identifikace nelineárního diskrétního dynamického modelu LOLIMOT typu NARX. }
+	\section{Vysvětlete pojmy testování a trénování identifikovaného modelu. }
+	\section{Vysvětlete rozdíl mezi simulačním a predikčním trénováním a použitím LOLIMOT modelu a souvislost těchto pojmů s NARX a NOE modely. }
+	\section{Uveďte příklad identifikace ad-hoc sestaveného dynamického modelu soustavy s pomocí obecných optimalizačních metod. }
+	\section{Uveďte základní postup identifikace fyzikálního modelu získaného např. z MKP po transformaci do redukovaného modálního tvaru. V čem tato redukce usnadní postup identifikace ? }
+	\section{Uveďte příklad využití fenomenologického identifikovaného modelu pro simulaci. }
+	\section{Popište použití identifikovaného modelu soustavy v regulátoru s prediktivním řízením. Jak souvisí s pojmy NARX a NOE modelů ? }
+% \end{multicols}
+\end{document}
