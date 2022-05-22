@@ -309,36 +309,37 @@
 	MAC kritérium se užívá pro zhodnocení shody vlastních vektorů modelu a měřeného systému. Při dokonalé shodě $\bm{M} = \bm{I}$.
 
 	\section{Popište metodu SDOF identifikace mechanického systému z naměřených přenosových funkcí. }
+
 	\section{Popište princip LSCF metody MDOF identifikace mechanického systému z naměřených přenosových funkcí. K čemu slouží stabilizační diagram ? }
 	\emph{Least Squares Complex Frequency} domain estimator
 	\begin{equation}
-		\bm{G}(s) = \frac{B(s)}{A(s)}
+		\bm{G}(s) = \frac{\bm{B}(s)}{\bm{A}(s)}
 	\end{equation}
 	kde
 	\begin{equation}
 		\bm{B}
 		=
 		\begin{bmatrix}
-			\bm{B}_{11}(s) & \bm{B}_{12}(s) & \dots & \bm{B}_{1N_i}(s) \\
-			\bm{B}_{21}(s) & \bm{B}_{22}(s) & \dots & \bm{B}_{2N_i}(s) \\
+			B_{11}(s) & B_{12}(s) & \dots & B_{1N_i}(s) \\
+			B_{21}(s) & B_{22}(s) & \dots & B_{2N_i}(s) \\
 			\vdots & \vdots & \ddots & \vdots \\
-			\bm{B}_{N_o 1}(s) & \bm{B}_{N_o 2}(s) & \dots & \bm{B}_{N_o N_i}(s)
+			B_{N_o 1}(s) & B_{N_o 2}(s) & \dots & B_{N_o N_i}(s)
 		\end{bmatrix}
 		\;,\quad 
 		\bm{A}
 		=
 		\begin{bmatrix}
-			\bm{A}_{11}(s) & \bm{A}_{12}(s) & \dots & \bm{A}_{1N_i}(s) \\
-			\bm{A}_{21}(s) & \bm{A}_{22}(s) & \dots & \bm{A}_{2N_i}(s) \\
+			A_{11}(s) & A_{12}(s) & \dots & A_{1N_i}(s) \\
+			A_{21}(s) & A_{22}(s) & \dots & A_{2N_i}(s) \\
 			\vdots & \vdots & \ddots & \vdots \\
-			\bm{A}_{N_o 1}(s) & \bm{A}_{N_o 2}(s) & \dots & \bm{A}_{N_o N_i}(s)
+			A_{N_o 1}(s) & A_{N_o 2}(s) & \dots & A_{N_o N_i}(s)
 		\end{bmatrix}
 	\end{equation}
 	a
 	\begin{equation}
-	\bm{B}_{ii} = \sum_{j=0}^m b_{{ii}_j} s^j
+	B_{ii} = \sum_{j=0}^m b_{{ii}_j} s^j
 	\;,\quad 
-	\bm{A}_{ii} = \sum_{j=0}^n a_{{ii}_j} s^j
+	A_{ii} = \sum_{j=0}^n a_{{ii}_j} s^j
 	\end{equation}
 
 	Stabilizační diagram slouží k identifikaci fyzikálních pólů, které se nemění při postupném zvyšování řádu modelu.
