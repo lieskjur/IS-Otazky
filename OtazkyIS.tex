@@ -152,13 +152,13 @@
 
 	\begin{align}
 		\bm{x}_1 &= \bm{B} \bm{u}_0 & \bm{y}_0 &= \bm{D}\bm{u}_0 \\
-		\bm{x}_2 &= \bm{A}\bm{B} \bm{u}_0 + \bm{B} \bm{u}_1 & \bm{y}_1 &= \bm{C}\bm{x}_1 + \bm{D} \bm{u}_1 \\
+		\bm{x}_2 &= \bm{A}\bm{B} \bm{u}_0 + \bm{B} \bm{u}_1 & \bm{y}_1 &= \bm{C}\bm{x}_1 + \bm{D} \bm{u}_1 = \bm{CBu_0 + Du_1}\\
 		\bm{x}_{k+1} &= \sum_{i=0}^{k} \bm{A}^{k-i} \bm{B} \bm{u}_i & \bm{y}_{k} &= \sum_{i=1}^k \underbrace{\bm{C} \bm{A}^{k-i} \bm{B}}_{h_i} \bm{u}_i + \underbrace{\bm{D}}_{h_0} \bm{u}_k 
 	\end{align}
 	\begin{equation}
-		\bm{Y} = \bm{U} \bm{H}
+		\bm{Y} = \bm{HU}
 	\end{equation}
-	kde $\bm{Y}$ je matice tvořena výstupy, $\bm{U}$ matice vstupů a matice $\bm{H}$ \emph{Markovovy parametry}.
+	kde $\bm{Y}$ je matice tvořena výstupy, $\bm{U}$ matice vstupů a matice $\bm{H}$ je Hankelova matice či matice \emph{Markovových parametrů}. $q$ je voleno dle času ustálení impulzové odezvy tak, aby $\bm{y_q}\approx \bm{0}$.
 	\begin{align}
 		\bm{Y}
 		&=
@@ -203,6 +203,7 @@
 		\end{bmatrix}
 	\end{equation}
 
+	\pagebreak
 	\section{Popište identifikaci diskrétního stavového modelu pomocí metody ERA při znalosti Hankelových matic a Markovových parametrů. Co je to balancovaný tvar modelu ? }
 
 	Hanklovy matice $\bm{H}_1$ a $\bm{H}_2$ lze zapsat jako
