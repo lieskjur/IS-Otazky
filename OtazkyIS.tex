@@ -74,7 +74,7 @@
 
 	\section{Popište postup identifikace lineárního modelu SISO systému ve tvaru ARX a OE. }
 	
-	\subsection{ARX}
+	\subsection{Auto Regresive model with eXogenous inputs}
 	Lineární filtr používajíci minulé vstupy a výstupy systému
 	\begin{equation}
 		\hat{y}(t) + a_1 y(t-\Delta t) + \dots + a_n y(t-n\Delta t)
@@ -107,7 +107,7 @@
 		\bm{p} &= \begin{bmatrix} -a_1 & \dots & -a_n & b_0 & \dots & b_n \end{bmatrix}^T
 	\end{align*}
 
-	\subsection{EO}
+	\subsection{Output Error model}
 	Lineární filtr používajíci minulé vstupy a výstupy modelu
 	\begin{equation}
 		\hat{y}(t) + a_1 \hat{y}(t-\Delta t) + \dots + a_n \hat{y}(t-n\Delta t)
@@ -205,11 +205,36 @@
 
 	\section{Popište identifikaci diskrétního stavového modelu pomocí metody ERA při znalosti Hankelových matic a Markovových parametrů. Co je to balancovaný tvar modelu ? }
 
+	\begin{equation}
+		\bm{H}_1 = \bm{P}\bm{Q}
+		\;,\quad 
+		\bm{H}_2 = \bm{P}\bm{A}\bm{Q}
+	\end{equation}
+
+	Balancovaný tvar zajistíme SVD rozkladem $\bm{H}_1$
+	\begin{equation}
+		\bm{H}_1 = \bm{V}\bm{\Gamma^2}\bm{U}^T
+		\Rightarrow
+		\bm{P} = \bm{V}\bm{\Gamma} \,,\; \bm{Q} = \bm{\Gamma}\bm{U}^T
+	\end{equation}
+
+	Matice systému
+	\begin{align}
+		\bm{A} &= \bm{P}^+ \bm{H}_2 \bm{Q}^+ \\
+		\bm{B} &= \bm{Q}[:,1:s] \\
+		\bm{C} &= \bm{P}[1:r,:]
+	\end{align}
+	kde $s$ je počet vstupů, $r$ počet výstupů a pseudo inverze $\bm{P}^+$, $\bm{Q}^+$ lze získat přímo z SVD rozkladu
+	\begin{equation}
+		\bm{P}^+ = \bm{\Gamma}^{-1}\bm{V}^T
+		\,,\;
+		\bm{Q}^+ = \bm{U}\bm{\Gamma}^{-1}
+	\end{equation}
 
 
 	\section{Vysvětlete rozdíl mezi modelem MDOF tlumeného mechanického systému s viskózním a strukturním tlumením. V čem je model se strukturním tlumením problematický pro časovou simulaci ? }
 
-	\subsection{Pohybové rovnice systému buzeného harmonickou funkcí}
+	\subsection*{Pohybové rovnice systému buzeného harmonickou funkcí}
 	\begin{itemize}
 		\item s viskózním tlumením
 		\begin{equation}
@@ -251,7 +276,7 @@
 	\begin{equation*}
 		\bm{M}\bm{\ddot{x}} + \bm{C}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
 	\end{equation*}
-	lze zavedením modální souřadnice $\bm{q} = \bm{V}\bm{x}$ a vynásobením transponovanou maticí modální transformace $\bm{V}^T$ zleva, převést do tvaru
+	lze zavedením modální souřadnic $\bm{q} \,,\; \bm{x} = \bm{V}\bm{q}$ a vynásobením transponovanou maticí modální transformace $\bm{V}^T$ zleva, převést do tvaru
 	\begin{equation*}
 		\bm{\ddot{q}} + \bm{\beta}\bm{\dot{q}} + \bm{\Omega}^2 \bm{q} = \bm{V}^T \bm{F}
 		\;,\quad 
@@ -281,14 +306,65 @@
 
 	\section{Popište metodu SDOF identifikace mechanického systému z naměřených přenosových funkcí. }
 	\section{Popište princip LSCF metody MDOF identifikace mechanického systému z naměřených přenosových funkcí. K čemu slouží stabilizační diagram ? }
-	\section{Co je nelineární model Hammersteinova typu a nelineární model Wienerova typu. }
+	\emph{Least Squares Complex Frequency} domain estimator
+	\begin{equation}
+		\bm{G}(s) = \frac{B(s)}{A(s)}
+	\end{equation}
+	kde
+	\begin{equation}
+		\bm{B}
+		=
+		\begin{bmatrix}
+			\bm{B}_{11}(s) & \bm{B}_{12}(s) & \dots & \bm{B}_{1N_i}(s) \\
+			\bm{B}_{21}(s) & \bm{B}_{22}(s) & \dots & \bm{B}_{2N_i}(s) \\
+			\vdots & \vdots & \ddots & \vdots \\
+			\bm{B}_{N_o 1}(s) & \bm{B}_{N_o 2}(s) & \dots & \bm{B}_{N_o N_i}(s)
+		\end{bmatrix}
+		\;,\quad 
+		\bm{A}
+		=
+		\begin{bmatrix}
+			\bm{A}_{11}(s) & \bm{A}_{12}(s) & \dots & \bm{A}_{1N_i}(s) \\
+			\bm{A}_{21}(s) & \bm{A}_{22}(s) & \dots & \bm{A}_{2N_i}(s) \\
+			\vdots & \vdots & \ddots & \vdots \\
+			\bm{A}_{N_o 1}(s) & \bm{A}_{N_o 2}(s) & \dots & \bm{A}_{N_o N_i}(s)
+		\end{bmatrix}
+	\end{equation}
+	a
+	\begin{equation}
+	\bm{B}_{ii} = \sum_{j=0}^m b_{{ii}_j} s^j
+	\;,\quad 
+	\bm{A}_{ii} = \sum_{j=0}^n a_{{ii}_j} s^j
+	\end{equation}
+
+	Stabilizační diagram slouží k identifikaci fyzikálních pólů, které se nemění při postupném zvyšování řádu modelu.
 	
-	\section{Uveďte strukturu nelineární identifikace používající koncept LOLIMOT. }
-	Local Linear Models Tree
+	\section{Co je nelineární model Hammersteinova typu a nelineární model Wienerova typu. }
+
+	Modely skládající se z dynamického lineárního přenosu $G(q)$ a statické nelineární funkce $f$
+	
+	\subsection*{Model Hammersteinova typu}	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=.6\linewidth]{figs/HammersteinuvModel.pdf}
+	\end{figure}
+	
+	\subsection*{Model Weinerova typu}	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=.6\linewidth]{figs/WeineruvModel.pdf}
+	\end{figure}
+
+	\section{Uveďte strukturu nelineární identifikace používající koncept LOLIMOT. } \label{lolimot}
+	\emph{LOcal LInear MOdels Tree}
 	\begin{equation}
 		\hat{y} = \sum_{i=1}^M \hat{y}_i \phi_i(\bm{u})
 	\end{equation}
-	kde $\hat{y}_i = w_{i0} + w_{i1} u_1 + w_{i2} u_2 + \dots$ jsou lokální lineární modely a $\phi_i(u)$ jejich platnostní funkce. Ty splňují
+	kde
+	\begin{equation}
+		\hat{y}_i = w_{i0} + w_{i1} u_1 + w_{i2} u_2 + \dots
+	\end{equation}
+	jsou lokální lineární modely a $\phi_i(u)$ jejich platnostní funkce. Ty splňují
 	\begin{equation}
 		\sum_{i=1}^n \phi_i(u) = 1
 		\;,\quad 
@@ -297,10 +373,24 @@
 		\mu_i = \exp(-\frac{1}{2}(...))
 	\end{equation}
 
+	\begin{itemize}
+	\item Vnitřní cyklus: výpočet koeficientů $w_i$ LLM při daném rozložení platnostních funkcí (exaktní - LSQ)
+	\item Vnější cyklus: hledání vhodného "rozdělení" oblasti (heuristika)
+	\end{itemize}
+
 
 	\section{Uveďte postup identifikace nelineárního diskrétního dynamického modelu LOLIMOT typu NARX. }
-	\section{Vysvětlete pojmy testování a trénování identifikovaného modelu. }
+
+	LOLIMOT typu NARX se liší od modelu v otázce \ref{lolimot} pouze ve tvaru lokálních modelů, který lze obecně zapsat jako
+	\begin{equation}
+		\hat{y}_k = f(\bm{u}_k,\bm{u}_{k-1},\dots,\bm{y}_{k-1},\bm{y}_{k-2},\dots)
+	\end{equation}
+	a způsobu jejich identifikace.
+
+	\section{Vysvětlete pojmy testování a trénování identifikovaného modelu.}
+
 	\section{Vysvětlete rozdíl mezi simulačním a predikčním trénováním a použitím LOLIMOT modelu a souvislost těchto pojmů s NARX a NOE modely. }
+
 	\section{Uveďte příklad identifikace ad-hoc sestaveného dynamického modelu soustavy s pomocí obecných optimalizačních metod. }
 	\section{Uveďte základní postup identifikace fyzikálního modelu získaného např. z MKP po transformaci do redukovaného modálního tvaru. V čem tato redukce usnadní postup identifikace ? }
 	\section{Uveďte příklad využití fenomenologického identifikovaného modelu pro simulaci. }
