@@ -205,32 +205,33 @@
 
 	\section{Popište identifikaci diskrétního stavového modelu pomocí metody ERA při znalosti Hankelových matic a Markovových parametrů. Co je to balancovaný tvar modelu ? }
 
+	Hanklovy matice $\bm{H}_1$ a $\bm{H}_2$ lze zapsat jako
 	\begin{equation}
 		\bm{H}_1 = \bm{P}\bm{Q}
 		\;,\quad 
 		\bm{H}_2 = \bm{P}\bm{A}\bm{Q}
 	\end{equation}
+	kde $\bm{P}$ je matice pozorovatelnosti a $\bm{Q}$ matice říditelnosti.
 
-	Balancovaný tvar zajistíme SVD rozkladem $\bm{H}_1$
+	Balancovaný tvar zajistíme SVD rozkladem $\bm{H}_1$ na
 	\begin{equation}
 		\bm{H}_1 = \bm{V}\bm{\Gamma^2}\bm{U}^T
 		\Rightarrow
 		\bm{P} = \bm{V}\bm{\Gamma} \,,\; \bm{Q} = \bm{\Gamma}\bm{U}^T
 	\end{equation}
 
-	Matice systému
+	Matice identifikovaného systému pak jsou
 	\begin{align}
 		\bm{A} &= \bm{P}^+ \bm{H}_2 \bm{Q}^+ \\
 		\bm{B} &= \bm{Q}[:,1:s] \\
 		\bm{C} &= \bm{P}[1:r,:]
 	\end{align}
-	kde $s$ je počet vstupů, $r$ počet výstupů a pseudo inverze $\bm{P}^+$, $\bm{Q}^+$ lze získat přímo z SVD rozkladu
+	kde $s$ je počet vstupů, $r$ počet výstupů a $\bm{P}^+$, $\bm{Q}^+$ pseudo-inverze, které lze získat přímo z SVD rozkladu
 	\begin{equation}
 		\bm{P}^+ = \bm{\Gamma}^{-1}\bm{V}^T
 		\,,\;
 		\bm{Q}^+ = \bm{U}\bm{\Gamma}^{-1}
 	\end{equation}
-
 
 	\section{Vysvětlete rozdíl mezi modelem MDOF tlumeného mechanického systému s viskózním a strukturním tlumením. V čem je model se strukturním tlumením problematický pro časovou simulaci ? }
 
@@ -252,15 +253,19 @@
 
 	\section{Popište modální transformaci mechanického systému, vysvětlete pojem proporcionálního tlumení. }
 
-	Základem modální trasformace je nalezení řešení problému vlastních čísel
+	Pro systém ve tvaru
+	\begin{equation*}
+		\bm{M}\bm{\ddot{x}} + \bm{C}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
+	\end{equation*}
+	je základem modální trasformace nalezení řešení problému vlastních čísel
 	\begin{equation*}
 		\bm{K}\bm{V} = \bm{\Omega}^2 \bm{M} \bm{V}
 	\end{equation*}
-	kde $\bm{\phi}_i$ jsou vlastní vektory a $\omega_i$ vlastní frekvence tvořící matice $\bm{V}$ a $\bm{\Omega}$  
+	kde $\bm{\phi}_i$ jsou vlastní vektory a $\Omega_i$ vlastní frekvence tvořící matice $\bm{V}$ a $\bm{\Omega}$  
 	\begin{equation*}
 		\bm{V} = \begin{bmatrix} \bm{\phi}_i & \dots & \bm{\phi}_N \end{bmatrix}
 		\,,\;
-		\bm{\Omega}^2 = \operatorname{diag}(\omega_i^2)
+		\bm{\Omega}^2 = \operatorname{diag}(\Omega_i^2)
 		\;,\quad 
 		i \in \langle 1,N \rangle
 	\end{equation*}
@@ -271,22 +276,21 @@
 		\;,\quad 
 		\bm{V}^T\bm{K}\bm{V} = \bm{\Omega}^2
 	\end{equation*}
-
-	Soustavu pohybovných rovnic systému s proporčním tlumením
-	\begin{equation*}
-		\bm{M}\bm{\ddot{x}} + \bm{C}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
-	\end{equation*}
+	
 	lze zavedením modální souřadnic $\bm{q} \,,\; \bm{x} = \bm{V}\bm{q}$ a vynásobením transponovanou maticí modální transformace $\bm{V}^T$ zleva, převést do tvaru
 	\begin{equation*}
-		\bm{\ddot{q}} + \bm{\beta}\bm{\dot{q}} + \bm{\Omega}^2 \bm{q} = \bm{V}^T \bm{F}
+		\bm{I}\bm{\ddot{q}} + \bm{\Gamma}\bm{\dot{q}} + \bm{\Omega}^2 \bm{q} = \bm{V}^T \bm{F}
 		\;,\quad 
-		\bm{\beta} = \operatorname{diag}(2\,b_{r_i}\omega_i) \;,\quad i \in \langle 1,N \rangle
+		\bm{\Omega} = \bm{V}^T\bm{K}\bm{V}
+		\,,\;
+		\bm{\Gamma} = \bm{V}^T\bm{B}\bm{V}
 	\end{equation*}
-	kde $ b_{r_i}$ jsou poměrné útlumy.
+
+	O systému můžeme říct, že má proporční tlumení, je-li matice $\bm{\Gamma}$ diagonální s prvky $\beta_{ii} = 2 b_{r_i} \Omega_i$, kde $b_{r_i}$ jsou poměrné útlumy.
 
 	Soustava se pak rozpadá na rovnice ve tvaru
 	\begin{equation*}
-		\ddot{q}_i + 2\,\omega_i\xi_i \dot{q} + \omega_i^2 q = f_i
+		\ddot{q}_i + 2\,\Omega_i\xi_i \dot{q} + \Omega_i^2 q = f_i
 		\;,\quad 
 		f_i = \bm{\phi}_i \cdot \bm{F}
 		\;,\quad 
@@ -360,11 +364,11 @@
 	\begin{equation}
 		\hat{y} = \sum_{i=1}^M \hat{y}_i \phi_i(\bm{u})
 	\end{equation}
-	kde
+	kde $\hat{y}_i$ jsou \emph{lokální lineární modely} (typu FIR?)
 	\begin{equation}
 		\hat{y}_i = w_{i0} + w_{i1} u_1 + w_{i2} u_2 + \dots
 	\end{equation}
-	jsou lokální lineární modely a $\phi_i(u)$ jejich platnostní funkce. Ty splňují
+	a $\phi_i(u)$ jejich platnostní funkce, které splňují
 	\begin{equation}
 		\sum_{i=1}^n \phi_i(u) = 1
 		\;,\quad 
@@ -383,17 +387,71 @@
 
 	LOLIMOT typu NARX se liší od modelu v otázce \ref{lolimot} pouze ve tvaru lokálních modelů, který lze obecně zapsat jako
 	\begin{equation}
-		\hat{y}_k = f(\bm{u}_k,\bm{u}_{k-1},\dots,\bm{y}_{k-1},\bm{y}_{k-2},\dots)
+		\hat{y}_k = f(u_k,u_{k-1},\dots,y_{k-1},y_{k-2},\dots)
 	\end{equation}
 	a způsobu jejich identifikace.
 
 	\section{Vysvětlete pojmy testování a trénování identifikovaného modelu.}
 
+	\subsection*{Trénování}
+	Při trénování jsou parametry identifikovaného modelu upravovány tak, aby chování systému co nejvíce odpovídalo \emph{trénovacím datům}.
+
+	\subsection*{Testování}
+	Při testování porovnáváme chování identifikovaného modelu k nové sadě \emph{testovacích dat}, abychom ověřili, že nedošlo k přetrénovaní modelu, tzn. přizpůsobení ke konkrétním trénovacím datům, nikoliv obecnému chování.
+
 	\section{Vysvětlete rozdíl mezi simulačním a predikčním trénováním a použitím LOLIMOT modelu a souvislost těchto pojmů s NARX a NOE modely. }
 
+	\subsection*{Simulační trénování}
+	Identifikovaný model je odpojený od reálného systému a pracuje pouze s jeho vstupy, kde chyba výstupu se kumuluje.
+
+	Odpovídá schématu NOE
+	\begin{equation}
+		\hat{y}_k = f(u_k,u_{k-1},\dots,\hat{y}_{k-1},\hat{y}_{k-2},\dots)
+	\end{equation}
+
+	\subsection*{Predikční trénování}
+	Model je připojen k výstupům modelu realného systému
+
+	Odpovídá schématu NARX
+	\begin{equation}
+		\hat{y}_k = f(u_k,u_{k-1},\dots,y_{k-1},y_{k-2},\dots)
+	\end{equation}
+
 	\section{Uveďte příklad identifikace ad-hoc sestaveného dynamického modelu soustavy s pomocí obecných optimalizačních metod. }
+
 	\section{Uveďte základní postup identifikace fyzikálního modelu získaného např. z MKP po transformaci do redukovaného modálního tvaru. V čem tato redukce usnadní postup identifikace ? }
+	
+	Na základě naměřených/navržených vlastností materiálu vytvořím mkp model ve tvaru
+	\begin{equation*}
+		\bm{M}\bm{\ddot{x}} + \bm{C}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
+	\end{equation*}
+	Ten následně transformuju do modálních souřadnic
+	\begin{equation*}
+		\bm{I}\bm{\ddot{q}} + \bm{\Gamma}\bm{\dot{q}} + \bm{\Omega}^2 \bm{q} = \bm{V}^T \bm{F}
+		\;,\quad 
+		\bm{\Omega} = \bm{V}^T\bm{K}\bm{V}
+		\,,\;
+		\bm{\Gamma} = \bm{V}^T\bm{B}\bm{V}
+	\end{equation*}
+	a oříznu mimodiagonální prvky transformované matice tlumení $\bm{\Gamma}$, přičemž prvky na diagonále lze vyjádřit jako $\beta_{ii} = 2 b_{r_i} \Omega_i$. Dále můžu provést redukci, ostraněním tvarů odpovídajících vyšším frekvencím systému.
+
+	Vyslédkem je model závislý pouze na parametrech $\omega_i$, $b_{r_i}$ 	pro každý zanechaný tvar, které můžu dále optimalizovat. Oproti black-box identifikaci nehrozí vznik umělých artefaktů.
+
 	\section{Uveďte příklad využití fenomenologického identifikovaného modelu pro simulaci. }
+	
+	Fenomenologicky například inentifikujeme tření
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/Coulomb.png}
+		\caption{Coulomb}
+	\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/Streibeck.png}
+		\caption{Streibeck}
+	\end{figure}
+	nebo nelineární chování tlumiče.
+
 	\section{Popište použití identifikovaného modelu soustavy v regulátoru s prediktivním řízením. Jak souvisí s pojmy NARX a NOE modelů ? }
 % \end{multicols}
 \end{document}
