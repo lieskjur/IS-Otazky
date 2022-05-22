@@ -252,13 +252,14 @@
 
 	Ve frekvenční oblasti $\bm{B}\omega = \bm{H}$
 
+	\pagebreak
 	\section{Popište modální transformaci mechanického systému, vysvětlete pojem proporcionálního tlumení. }
 
 	Pro systém ve tvaru
 	\begin{equation*}
 		\bm{M}\bm{\ddot{x}} + \bm{C}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
 	\end{equation*}
-	je základem modální trasformace nalezení řešení problému vlastních čísel
+	je základem modální trasformace nalezení řešení zobecněného problému vlastních čísel
 	\begin{equation*}
 		\bm{K}\bm{V} = \bm{\Omega}^2 \bm{M} \bm{V}
 	\end{equation*}
@@ -271,7 +272,7 @@
 		i \in \langle 1,N \rangle
 	\end{equation*}
 
-	Po té platí
+	Pro navzájem ortogonální vlastní vektory s vahou matice hmotnosti (získané příslušnou normalizací) platí
 	\begin{equation*}
 		\bm{V}^T\bm{M}\bm{V} = \bm{1}
 		\;,\quad 
@@ -280,16 +281,14 @@
 	
 	lze zavedením modální souřadnic $\bm{q} \,,\; \bm{x} = \bm{V}\bm{q}$ a vynásobením transponovanou maticí modální transformace $\bm{V}^T$ zleva, převést do tvaru
 	\begin{equation*}
-		\bm{I}\bm{\ddot{q}} + \bm{\Gamma}\bm{\dot{q}} + \bm{\Omega}^2 \bm{q} = \bm{V}^T \bm{F}
+		\bm{\ddot{q}} + \bm{\Gamma}\bm{\dot{q}} + \bm{\Omega}^2 \bm{q} = \bm{V}^T \bm{F}
 		\;,\quad 
 		\bm{\Omega} = \bm{V}^T\bm{K}\bm{V}
 		\,,\;
 		\bm{\Gamma} = \bm{V}^T\bm{B}\bm{V}
 	\end{equation*}
 
-	O systému můžeme říct, že má proporční tlumení, je-li matice $\bm{\Gamma}$ diagonální s prvky $\beta_{ii} = 2 b_{r_i} \Omega_i$, kde $b_{r_i}$ jsou poměrné útlumy.
-
-	Soustava se pak rozpadá na rovnice ve tvaru
+	O systému můžeme říct, že má proporční tlumení, je-li matice $\bm{C}$ lineární kombinací matic $\bm{M}$ a $\bm{K}$. Pak je tato matice diagonalizovatelná modální transformací $\bm{V}$ a matice $\bm{\Gamma}$ je diagonální s prvky $(\bm{\Gamma})_{ii} = 2 \zeta_{i} \Omega_i$, kde $\zeta_i$ jsou poměrné útlumy. Soustava se pak rozpadá na samostatně řešitelné rovnice ve tvaru
 	\begin{equation*}
 		\ddot{q}_i + 2\,\Omega_i\xi_i \dot{q} + \Omega_i^2 q = f_i
 		\;,\quad 
