@@ -59,13 +59,13 @@
 	\end{align*}
 	diskrétní tvar lze získat z tvaru spojitého modelu v časové oblasti
 	\begin{align*}
-		\bm{M} = e^{\bm{A}\Delta t} \doteq \bm{I} + \bm{A}\Delta t
-		\,,\;
-		\bm{N} = \bm{B}
-		\,,\;
-		\bm{O} = \bm{C}
-		\,,\;
-		\bm{P} = \bm{D}
+		\bm{M} &= e^{\bm{A}\Delta t} \doteq \bm{I} + \bm{A}\Delta t
+		\\
+		\bm{N} &= \bm{A}^{-1} \left( e^{\mathbf{A}\Delta t} - \mathbf{I} \right) \bm{B} \doteq \bm{B}\Delta t
+		\\
+		\bm{O} &= \bm{C}
+		\\
+		\bm{P} &= \bm{D}
 	\end{align*}
 	\subsection*{Nelineární systém}
 	\begin{align}
@@ -152,19 +152,35 @@
 	\section{Vysvětlete jak se sestavují Markovovy parametry a Hankelovy matice pro diskrétní stavový model. }
 
 	\begin{align}
-		\bm{x}_1 &= \bm{B} \bm{u}_0 & \bm{y}_0 &= \bm{D}\bm{u}_0 \\
-		\bm{x}_2 &= \bm{A}\bm{B} \bm{u}_0 + \bm{B} \bm{u}_1 & \bm{y}_1 &= \bm{C}\bm{x}_1 + \bm{D} \bm{u}_1 \\
-		\bm{x}_{k+1} &= \sum_{i=0}^{k} \bm{A}^{k-i} \bm{B} \bm{u}_i & \bm{y}_{k} &= \sum_{i=1}^k \underbrace{\bm{C} \bm{A}^{k-i} \bm{B}}_{h_i} \bm{u}_i + \underbrace{\bm{D}}_{h_0} \bm{u}_k 
+		\bm{x}_1 &= \bm{B} \bm{u}_0
+		&
+		\bm{y}_0 &= \bm{D}\bm{u}_0
+		\\
+		\bm{x}_2 &= \bm{A}\bm{B} \bm{u}_0 + \bm{B} \bm{u}_1
+		&
+		\bm{y}_1 &= \bm{C}\bm{x}_1 + \bm{D} \bm{u}_1 = \bm{C}\bm{B}\bm{u}_0 + \bm{D} \bm{u}_1 
+		\\
+		&\vdots & &\vdots
+		\\
+		\bm{x}_{k+1} &= \sum_{i=0}^{k} \bm{A}^{k-i} \bm{B} \bm{u}_i
+		&
+		\bm{y}_{k} &= \sum_{i=1}^k \underbrace{\bm{C} \bm{A}^{k-i} \bm{B}}_{h_i} \bm{u}_i + \underbrace{\bm{D}}_{h_0} \bm{u}_k 
 	\end{align}
 	\begin{equation}
-		\bm{Y} = \bm{U} \bm{H}
+		\bm{Y} = \bm{H} \bm{U}
 	\end{equation}
-	kde $\bm{Y}$ je matice tvořena výstupy, $\bm{U}$ matice vstupů a matice $\bm{H}$ \emph{Markovovy parametry}.
+	kde $\bm{Y}$ je matice tvořena výstupy, $\bm{U}$ matice vstupů a matice $\bm{H}$ je Hankelova matice či matice \emph{Markovových parametrů}. $q$ je voleno dle času ustálení impulzové odezvy tak, aby $\bm{y_q}\approx \bm{0}$.
 	\begin{align}
 		\bm{Y}
 		&=
 		\begin{bmatrix}
 			\bm{y}_0 & \bm{y}_0 & \dots & \bm{y}_q
+		\end{bmatrix}
+		\\
+		\bm{H}
+		&=
+		\begin{bmatrix}
+			\bm{h}_0 & \bm{h}_1 & \dots & \bm{h}_p
 		\end{bmatrix}
 		\\
 		\bm{U}
@@ -174,12 +190,6 @@
 			\bm{0} & \bm{u}_0 & \dots & \bm{u}_{q-1} \\
 			\vdots & & & \vdots \\
 			\bm{0} & \dots & & \bm{u}_{q-p} 
-		\end{bmatrix}
-		\\
-		\bm{H}
-		&=
-		\begin{bmatrix}
-			\bm{h}_0 & \bm{h}_1 & \dots & \bm{h}_p
 		\end{bmatrix}
 	\end{align}
 
@@ -244,7 +254,7 @@
 		\end{equation}
 		\item se strukturním tlumením
 		\begin{equation}
-			\bm{M}\bm{\ddot{x}} + (\bm{K} + j\bm{H}) \bm{x} = \bm{F}
+			\bm{M}\bm{\ddot{x}} + (j\bm{H} + \bm{K}) \bm{x} = \bm{F}
 		\end{equation}
 	\end{itemize}
 
@@ -258,7 +268,7 @@
 	\begin{equation*}
 		\bm{M}\bm{\ddot{x}} + \bm{C}\bm{\dot{x}} + \bm{K}\bm{x} = \bm{F}
 	\end{equation*}
-	je základem modální trasformace nalezení řešení problému vlastních čísel
+	je základem modální trasformace nalezení řešení zobecněného problému vlastních čísel
 	\begin{equation*}
 		\bm{K}\bm{V} = \bm{\Omega}^2 \bm{M} \bm{V}
 	\end{equation*}
@@ -271,7 +281,7 @@
 		i \in \langle 1,N \rangle
 	\end{equation*}
 
-	Po té platí
+	Pro navzájem ortogonální vlastní vektory s vahou matice hmotnosti (získané příslušnou normalizací) platí
 	\begin{equation*}
 		\bm{V}^T\bm{M}\bm{V} = \bm{1}
 		\;,\quad 
@@ -287,9 +297,7 @@
 		\bm{\Gamma} = \bm{V}^T\bm{B}\bm{V}
 	\end{equation*}
 
-	O systému můžeme říct, že má proporční tlumení, je-li matice $\bm{\Gamma}$ diagonální s prvky $\beta_{ii} = 2 b_{r_i} \Omega_i$, kde $b_{r_i}$ jsou poměrné útlumy.
-
-	Soustava se pak rozpadá na rovnice ve tvaru
+	O systému můžeme říct, že má proporční tlumení, je-li matice $\bm{C}$ lineární kombinací matic $\bm{M}$ a $\bm{K}$. Pak je tato matice diagonalizovatelná modální transformací $\bm{V}$ a matice $\bm{\Gamma}$ je diagonální s prvky $(\bm{\Gamma})_{ii} = 2 \zeta_{i} \Omega_i$, kde $\zeta_i$ jsou poměrné útlumy. Soustava se pak rozpadá na samostatně řešitelné rovnice ve tvaru
 	\begin{equation*}
 		\ddot{q}_i + 2\,\Omega_i\xi_i \dot{q} + \Omega_i^2 q = f_i
 		\;,\quad 
@@ -310,6 +318,7 @@
 	MAC kritérium se užívá pro zhodnocení shody vlastních vektorů modelu a měřeného systému. Při dokonalé shodě $\bm{M} = \bm{I}$.
 
 	\section{Popište metodu SDOF identifikace mechanického systému z naměřených přenosových funkcí. }
+	Tato metoda je použitelná pouze pro lineární identifikaci. Často v kombinaci s \emph{chirp} buzením. Výhoda reprezentace dat ve frekvenční oblasti je hustota informace a relativně nízká míra její ztráty oproti časové oblasti, kde mohou být data uložena pouze jako série diskrétních datových bodů [Matlab].
 
 	\section{Popište princip LSCF metody MDOF identifikace mechanického systému z naměřených přenosových funkcí. K čemu slouží stabilizační diagram ? }
 	\emph{Least Squares Complex Frequency} domain estimator
@@ -386,13 +395,13 @@
 
 	\begin{itemize}
 	\item Vnitřní cyklus: výpočet koeficientů $w_i$ LLM při daném rozložení platnostních funkcí (exaktní - LSQ)
-	\item Vnější cyklus: hledání vhodného "rozdělení" oblasti (heuristika)
+	\item Vnější cyklus: hledání vhodného ``rozdělení'' oblasti (heuristika)
 	\end{itemize}
 
 
 	\section{Uveďte postup identifikace nelineárního diskrétního dynamického modelu LOLIMOT typu NARX. }
 
-	LOLIMOT typu NARX se liší od modelu v otázce \ref{lolimot} pouze ve tvaru lokálních modelů, který lze obecně zapsat jako
+	LOLIMOT typu NARX (Nonlinear Auto Regressive with Exogenous inputs) se liší od modelu v otázce \ref{lolimot} pouze ve tvaru lokálních modelů, který lze obecně zapsat jako
 	\begin{equation}
 		\hat{y}_k = f(u_k,u_{k-1},\dots,y_{k-1},y_{k-2},\dots)
 	\end{equation}
@@ -411,7 +420,7 @@
 	\subsection*{Simulační trénování}
 	Identifikovaný model je odpojený od reálného systému a pracuje pouze s jeho vstupy, kde chyba výstupu se kumuluje.
 
-	Odpovídá schématu NOE
+	Odpovídá schématu NOE (Nonlinear Output Error)
 	\begin{equation}
 		\hat{y}_k = f(u_k,u_{k-1},\dots,\hat{y}_{k-1},\hat{y}_{k-2},\dots)
 	\end{equation}
