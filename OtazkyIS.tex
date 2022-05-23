@@ -309,6 +309,7 @@
 	MAC kritérium se užívá pro zhodnocení shody vlastních vektorů modelu a měřeného systému. Při dokonalé shodě $\bm{M} = \bm{I}$.
 
 	\section{Popište metodu SDOF identifikace mechanického systému z naměřených přenosových funkcí. }
+	Tato metoda je použitelná pouze pro lineární identifikaci. Často v kombinaci s \emph{chirp} buzením. Výhoda reprezentace dat ve frekvenční oblasti je hustota informace a relativně nízká míra její ztráty oproti časové oblasti, kde mohou být data uložena pouze jako série diskrétních datových bodů [Matlab].
 
 	\section{Popište princip LSCF metody MDOF identifikace mechanického systému z naměřených přenosových funkcí. K čemu slouží stabilizační diagram ? }
 	\emph{Least Squares Complex Frequency} domain estimator
@@ -391,7 +392,7 @@
 
 	\section{Uveďte postup identifikace nelineárního diskrétního dynamického modelu LOLIMOT typu NARX. }
 
-	LOLIMOT typu NARX se liší od modelu v otázce \ref{lolimot} pouze ve tvaru lokálních modelů, který lze obecně zapsat jako
+	LOLIMOT typu NARX (Nonlinear Auto Regressive with Exogenous inputs) se liší od modelu v otázce \ref{lolimot} pouze ve tvaru lokálních modelů, který lze obecně zapsat jako
 	\begin{equation}
 		\hat{y}_k = f(u_k,u_{k-1},\dots,y_{k-1},y_{k-2},\dots)
 	\end{equation}
@@ -410,7 +411,7 @@
 	\subsection*{Simulační trénování}
 	Identifikovaný model je odpojený od reálného systému a pracuje pouze s jeho vstupy, kde chyba výstupu se kumuluje.
 
-	Odpovídá schématu NOE
+	Odpovídá schématu NOE (Nonlinear Output Error)
 	\begin{equation}
 		\hat{y}_k = f(u_k,u_{k-1},\dots,\hat{y}_{k-1},\hat{y}_{k-2},\dots)
 	\end{equation}
