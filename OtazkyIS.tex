@@ -15,6 +15,7 @@
 	\usepackage{enumitem}
 	\usepackage{listings}
 	\usepackage{multicol,float}
+	\usepackage{subcaption}
 
 % Document settings
 	\geometry{a4paper,margin=15mm}
@@ -300,7 +301,7 @@
 	\section{Napište a vysvětlete MAC kritérium pro porovnání vlastních tvarů modelu a vlastních tvarů naměřených. }
 	\emph{Modal Assurance Criterion}
 	\begin{equation}
-	M_{rq} = \frac{\phi_{A_r}^T \phi_{X_r}}{(\phi_{A_r}^T\phi_{A_r})(\phi_{X_r}^T\phi_{X_r})}
+	M_{rq} = \frac{(\phi_{A_r}^T \phi_{X_r})^2}{(\phi_{A_r}^T\phi_{A_r})(\phi_{X_r}^T\phi_{X_r})}
 	\;,\quad 
 	r = 1,\dots,n \,,\; q = 1,\dots,m
 	\end{equation}
@@ -446,18 +447,78 @@
 	\section{Uveďte příklad využití fenomenologického identifikovaného modelu pro simulaci. }
 	
 	Fenomenologicky například inentifikujeme tření
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.5\linewidth]{figs/Coulomb.png}
-		\caption{Coulomb}
-	\end{figure}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.5\linewidth]{figs/Streibeck.png}
-		\caption{Streibeck}
-	\end{figure}
+	\begin{figure*}[ht!]
+		\begin{subfigure}[h!]{.49\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{figs/Coulomb.png}
+			\caption{Coulomb}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[h!]{.49\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{figs/Streibeck.png}
+			\caption{Streibeck}
+		\end{subfigure}
+	\end{figure*}
 	nebo nelineární chování tlumiče.
 
 	\section{Popište použití identifikovaného modelu soustavy v regulátoru s prediktivním řízením. Jak souvisí s pojmy NARX a NOE modelů ? }
+
+	\begin{align}
+		\bm{x}_{k+1} &= \bm{A}\bm{x}_k + \bm{B}\bm{u}_k \\
+		\bm{y}_k &= \bm{C}\bm{x}_k
+	\end{align}
+
+	\begin{align}
+		\bm{\hat{x}}_{k+1} &= \bm{A}\bm{x}_k + \bm{B}\bm{u}_k \\
+		\bm{\hat{x}}_{k+2} &= \bm{A}^2\bm{x}_k + \bm{A}\bm{B}\bm{u}_k + \bm{B}\bm{u}_{k+1}\\
+		\bm{\hat{x}}_{k+n} &= \bm{A}^n\bm{x}_k + \sum_{i=1}^n \bm{A}^{n-i}\bm{B}\bm{u}_{k+i-1}
+	\end{align}
+
+	\begin{equation}
+		\bm{\hat{y}}_{k+n} = \bm{C}\bm{A}^n\bm{x}_k + \sum_{i=1}^n \bm{C}\bm{A}^{n-i}\bm{B}\bm{u}_{k+i}
+	\end{equation}
+
+	\begin{equation}
+		\bm{\hat{Y}} = \bm{f} + \bm{G}\bm{U}
+	\end{equation}
+	\begin{equation}
+		\bm{\hat{Y}}
+		=
+		\begin{bmatrix}
+			\bm{\hat{y}}_{k+1} \\
+			\vdots \\
+			\bm{\hat{y}}_{k+N}
+		\end{bmatrix}
+		\;,\quad 
+		\bm{f}
+		=
+		\begin{bmatrix}
+			\bm{C}\bm{A} \\
+			\vdots \\
+			\bm{C}\bm{A}^N
+		\end{bmatrix}
+		\bm{x}_k
+		\;,\quad 
+		\bm{G}
+		=
+		\begin{bmatrix}
+			\bm{C}\bm{B} &  & \bm{0} \\
+			\vdots & \ddots & \\
+			\bm{C}\bm{A}^{N-1}\bm{B} & \dots & \bm{C}\bm{B}
+		\end{bmatrix}
+		\;,\quad 
+		\bm{U}
+		=
+		\begin{bmatrix}
+			\bm{u}_{k} \\
+			\vdots \\
+			\bm{u}_{k+N-1}
+		\end{bmatrix}
+	\end{equation}
+
+	\begin{equation}
+	\bm{J}_k = (\bm{\hat{Y}}-\bm{W})^T \bm{Q} (\bm{\hat{Y}}-\bm{W}) + \bm{U}^T\bm{P}\bm{U}
+	\end{equation}
 % \end{multicols}
 \end{document}
