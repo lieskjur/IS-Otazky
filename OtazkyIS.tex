@@ -367,23 +367,27 @@
 	\end{figure}
 
 	\section{Uveďte strukturu nelineární identifikace používající koncept LOLIMOT. } \label{lolimot}
-	\emph{LOcal LInear MOdels Tree}
+	\emph{LOcal LInear MOdels Tree} \\
+	The main idea is to approximate
+	a generally nonlinear multivariable function describing
+	a dynamic system output with the scalar product of
+	the vector of linear functions of the system inputs and the vector of so-called validity functions.
 	\begin{equation}
-		\hat{y} = \sum_{i=1}^M \hat{y}_i \phi_i(\bm{u})
+		\hat{y} = \sum_{i=1}^M \hat{y}_i(\bm{x}) \phi_i(\bm{z	})
 	\end{equation}
-	kde $\hat{y}_i$ jsou \emph{lokální lineární modely} (typu FIR?)
+	kde $\hat{y}_i$ jsou \emph{lokální lineární modely}
 	\begin{equation}
-		\hat{y}_i = w_{i0} + w_{i1} u_1 + w_{i2} u_2 + \dots
+		\hat{y}_i = w_{i0} + w_{i1} x_1 + w_{i2} x_2 + \dots + w_{in}x_n
 	\end{equation}
-	a $\phi_i(u)$ jejich platnostní funkce, které splňují
+	a $\phi_i(u)$ jejich platnostní funkce, formulovány jako normalizované ortogonální Gaussovské rozdělení, které splňují
 	\begin{equation}
 		\sum_{i=1}^n \phi_i(u) = 1
 		\;,\quad 
 		\phi_i(u) = \frac{\mu_i(u)}{\sum_{i=1}^n \mu_i(u)}
 		\;,\quad 
-		\mu_i = \exp(-\frac{1}{2}(...))
+		\mu_i = \exp\left(-\frac{1}{2}\sum_{j=1}^{M}\frac{(u_j-c_{ij})^2}{\sigma_{ij}^2}\right)
 	\end{equation}
-
+	kde $M$ je počet LLM a $c_{ij}$ a $\sigma^2_{ij}$, která jsou volitelná, jsou popořadě střední hodnota a rozptyl $i$-tého rozdělení pro $j$-tý LLM. Vektory zobecněných vstupů, neboli \emph{regresorů}, $\bm{x}$ a $\bm{z}$ obecně obsahují okamžité vstupy systému $u_j(k)$, minulé vstupy systému $u_j(k-r)$ a minulé výstupy systému $y(k-s)$, kde $r$ a $s$ jsou horizonty závislosti na vstupech a výstupech, popořadě. $\bm{z}$ je nazýván vektor premis (premises) a $\bm{x}$ vektor konsekventů (consequents).
 	\begin{itemize}
 	\item Vnitřní cyklus: výpočet koeficientů $w_i$ LLM při daném rozložení platnostních funkcí (exaktní - LSQ)
 	\item Vnější cyklus: hledání vhodného "rozdělení" oblasti (heuristika)
