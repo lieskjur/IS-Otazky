@@ -321,7 +321,7 @@
 	Tato metoda je použitelná pouze pro lineární identifikaci. Často v kombinaci s \emph{chirp} buzením. Výhoda reprezentace dat ve frekvenční oblasti je hustota informace a relativně nízká míra její ztráty oproti časové oblasti, kde mohou být data uložena pouze jako série diskrétních datových bodů [Matlab].
 
 	\begin{equation}
-		g = \frac{a_0 + a_1 s + a_2 s^2 + \dots + a_m s^m}{b_0 + b_1 s + b_2 s^2 + \dots + b_n s^n}
+		g(s) = \frac{a_0 + a_1 s + a_2 s^2 + \dots + a_m s^m}{b_0 + b_1 s + b_2 s^2 + \dots + b_n s^n}
 	\end{equation}
 
 	\begin{itemize}
@@ -332,12 +332,12 @@
 	\begin{align}
 		e &= g-\hat{g} \\
 		\hat{e} &= \sum_{k=1}^m a_{k} p_{k} - \hat{g} \sum_{k=1}^n b_{k} p_{k}
-		\;,\quad p_{k}=j \omega^{k} \,,\; \hat{e} = \sum_{k=1}^n b_{k} p_{k}
+		\;,\quad p_{k}=(j\omega)^k \,,\; \hat{e} = e\sum_{k=1}^n b_{k} p_{k}
 	\end{align}
 
 	minimalizujeme
 	\begin{equation}
-	J = \bm{\hat{E}}^T\bm{\hat{E}}
+	J = \bm{\hat{E}}^*\bm{\hat{E}}
 	\;,\quad 
 	\bm{\hat{E}}
 	=
