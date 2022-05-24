@@ -111,9 +111,9 @@
 	\subsection{Output Error model}
 	Lineární filtr používajíci minulé vstupy a výstupy modelu
 	\begin{equation}
-		\hat{y}(t) + a_1 \hat{y}(t-\Delta t) + \dots + a_n \hat{y}(t-n\Delta t)
+		\hat{y}(t) + a_1 \hat{y}(t-\Delta t) + \ldots + a_n \hat{y}(t-n\Delta t)
 		=
-		b_0 u(t) + \dots + b_n u(t-n\Delta t)
+		b_0 u(t) + \ldots + b_n u(t-n\Delta t)
 	\end{equation}
 	zbytek obdobně jako pro ARX jen se změnou $y$ na $\hat{y}$.
 
@@ -320,6 +320,15 @@
 	\section{Popište metodu SDOF identifikace mechanického systému z naměřených přenosových funkcí. }
 	Tato metoda je použitelná pouze pro lineární identifikaci. Často v kombinaci s \emph{chirp} buzením. Výhoda reprezentace dat ve frekvenční oblasti je hustota informace a relativně nízká míra její ztráty oproti časové oblasti, kde mohou být data uložena pouze jako série diskrétních datových bodů [Matlab].
 
+	\begin{equation}
+		g = \frac{a_0 + a_1 s + a_2 s^2 + \dots + a_m s^m}{b_0 + b_1 s + b_2 s^2 + \dots + b_n s^n}
+	\end{equation}
+
+	\begin{itemize}
+	\item provedeme měření pro $\omega_1, \dots, \omega_p$ s odezvou $g(j\omega_1),\dots,g(j\omega_p)$
+	\item rozšíříme pro $-\omega_1, \dots, -\omega_p$ s odezvou $g(-j\omega_k)=g(j\omega_k)^*$
+	\end{itemize}
+
 	\section{Popište princip LSCF metody MDOF identifikace mechanického systému z naměřených přenosových funkcí. K čemu slouží stabilizační diagram ? }
 	\emph{Least Squares Complex Frequency} domain estimator
 	\begin{equation}
@@ -347,9 +356,9 @@
 	\end{equation}
 	a
 	\begin{equation}
-	B_{ii} = \sum_{j=0}^m b_{{ii}_j} s^j
+	B_{kl} = \sum_{j=0}^m b_{{kl}_j} s^j
 	\;,\quad 
-	A_{ii} = \sum_{j=0}^n a_{{ii}_j} s^j
+	A_{kl} = \sum_{j=0}^n a_{{kl}_j} s^j
 	\end{equation}
 
 	Stabilizační diagram slouží k identifikaci fyzikálních pólů, které se nemění při postupném zvyšování řádu modelu.
