@@ -432,20 +432,55 @@
 	\item Vnější cyklus: hledání vhodného ``rozdělení'' oblasti (heuristika)
 	\end{itemize}
 
-
+	\pagebreak
 	\section{Uveďte postup identifikace nelineárního diskrétního dynamického modelu LOLIMOT typu NARX. }
 
 	LOLIMOT typu NARX (Nonlinear Auto Regressive with Exogenous inputs) aproximuje obecnou nelineární závislost modelu NARX pomocí lineární kombinace lokálních lineárních ARX modelů.
-	
+	\begin{equation}
+		\hat{y}(t) + a_1 y(t-\Delta t) + \dots + a_n y(t-n\Delta t)
+		=
+		b_0 u(t) + \dots + b_n u(t-n\Delta t)
+	\end{equation}
+	NARX LOLIMOT lze pak zapsat jako
+	\begin{equation}
+		\hat{y} = \sum_{i=1}^M \bm{w}_i^T \bm{x} \phi_i(\bm{z})
+		\;,\quad 
+		\bm{w}_i = \begin{bmatrix} -a_{1_i} & \dots & -a_{n_i} & b_{0_i} & \dots & b_{n_i} \end{bmatrix}^T
+	\end{equation}
+	pro který identifikace probíhá metodou nejmenších čtverců dle schématu
+	\begin{equation}
+		\bm{\hat{y}} = \bm{X}\bm{W}
+		\;,\quad 
+		\bm{X}
+		=
+		\begin{bmatrix}
+			\bm{X}_1 & \dots & \bm{X}_M
+		\end{bmatrix}
+		\,\;
+		\bm{W}
+		=
+		\begin{bmatrix}
+		\bm{w}_1 \\ \vdots \\ \bm{w}_M
+		\end{bmatrix}
+	\end{equation}
+	kde
+	\begin{equation}
+		\bm{X}_i
+		\begin{bmatrix}
+			y_{n-1} & \dots & y_0 & u_n & \dots & u_0 \\
+			\vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+			y_{N-1} & \dots & y_{N-n} & u_N & \dots & u_{N-n}
+		\end{bmatrix}
+		\bm{\phi}_i(\bm{z})
+	\end{equation}
+	Váhy jsou z něj získány pomocí pseudoinverze
+	\begin{equation}
+	\bm{W} = \bm{X}^+ \bm{\hat{y}}
+	\end{equation}
+
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=.8\linewidth]{figs/lolimot_narx.png}
-	\end{figure}	
-	\pagebreak
-	Identifikace pak probíhá metodou nejmenších čtverců dle schématu
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=.8\linewidth]{figs/is_narx-id.pdf}
+		\includegraphics[width=.5\linewidth]{figs/lolimot_narx.png}
 	\end{figure}
 
 	\section{Vysvětlete pojmy testování a trénování identifikovaného modelu.}
