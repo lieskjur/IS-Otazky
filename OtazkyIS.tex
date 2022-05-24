@@ -392,6 +392,32 @@
 	\item Vnitřní cyklus: výpočet koeficientů $w_i$ LLM při daném rozložení platnostních funkcí (exaktní - LSQ)
 	\item Vnější cyklus: hledání vhodného "rozdělení" oblasti (heuristika)
 	\end{itemize}
+	The basic algorithm of the identification procedure is as
+follows:
+\begin{enumerate}
+\item Determine the data region. Construct the validity
+function for this single global linear model equal
+to one. Construct the linear model (i.e., estimate
+its coefficients). Set the number of LLMs, M=1.
+\item Find the worst performing LLM and denote its
+index as I.
+\item The I-th LLM is considered for further
+refinement. The corresponding hyper-rectangle
+is split into two halves with an axis-orthogonal
+split. Division in each dimension dim=1...p is
+tried and the following steps are performed:
+\item Construction of all validity functions as a
+normalized orthogonal Gaussian
+functions.
+\item Estimation of parameters of both newly
+constructed LLMs (LSQ method).
+\item Calculation of the loss function for the
+current overall model (prediction or simulation error).
+\item Adopt the best of the p alternatives from the
+Step 3. Put M=M+1.
+\item Check whether the termination criterion is met; if
+so, stop the algorithm, else continue with Step 2.
+\end{enumerate}
 
 	\pagebreak
 	\section{Uveďte postup identifikace nelineárního diskrétního dynamického modelu LOLIMOT typu NARX. }
@@ -455,9 +481,9 @@
 
 	Vyslédkem je model závislý pouze na parametrech $\omega_i$, $b_{r_i}$ 	pro každý zanechaný tvar, které můžu dále optimalizovat. Oproti black-box identifikaci nehrozí vznik umělých artefaktů.
 
-	\section{Uveďte příklad využití fenomenologického identifikovaného modelu pro simulaci. }
+	\section{Uveďte příklad využití fenomenologického identifikovaného modelu pro simulaci.}
 	
-	Fenomenologicky například inentifikujeme tření
+	Fenomenologicky například inentifikujeme tření (např. Lu Gre model)
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.5\linewidth]{figs/Coulomb.png}
@@ -470,6 +496,7 @@
 	\end{figure}
 	nebo nelineární chování tlumiče.
 
-	\section{Popište použití identifikovaného modelu soustavy v regulátoru s prediktivním řízením. Jak souvisí s pojmy NARX a NOE modelů ? }
+	\pagebreak	
+	\section{Popište použití identifikovaného modelu soustavy v regulátoru s prediktivním řízením. Jak souvisí s pojmy NARX a NOE modelů ?}
 % \end{multicols}
 \end{document}
