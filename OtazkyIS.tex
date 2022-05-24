@@ -435,11 +435,18 @@
 
 	\section{Uveďte postup identifikace nelineárního diskrétního dynamického modelu LOLIMOT typu NARX. }
 
-	LOLIMOT typu NARX (Nonlinear Auto Regressive with Exogenous inputs) se liší od modelu v otázce \ref{lolimot} pouze ve tvaru lokálních modelů, který lze obecně zapsat jako
-	\begin{equation}
-		\hat{y}_k = f(u_k,u_{k-1},\dots,y_{k-1},y_{k-2},\dots)
-	\end{equation}
-	a způsobu jejich identifikace.
+	LOLIMOT typu NARX (Nonlinear Auto Regressive with Exogenous inputs) aproximuje obecnou nelineární závislost modelu NARX pomocí lineární kombinace lokálních lineárních ARX modelů.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=.8\linewidth]{figs/lolimot_narx.png}
+	\end{figure}	
+	\pagebreak
+	Identifikace pak probíhá metodou nejmenších čtverců dle schématu
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=.8\linewidth]{figs/is_narx-id.pdf}
+	\end{figure}
 
 	\section{Vysvětlete pojmy testování a trénování identifikovaného modelu.}
 
